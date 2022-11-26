@@ -1,2 +1,8 @@
 bot_token = DISCORD_BOT_TOKEN
 log_channel = LOG_CHANNEL_ID
+#Amount of active warnings for a user to receive punishment
+warning_threshold=3
+#ENUM(kick, ban, timeout)
+warning_punishment_type=timeout
+#in minutes
+warning_punishment_duration=1

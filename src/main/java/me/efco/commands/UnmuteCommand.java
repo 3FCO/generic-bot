@@ -1,6 +1,7 @@
 package me.efco.commands;
 
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
@@ -29,5 +30,10 @@ public class UnmuteCommand extends AbstractCommand {
 
         event.getGuild().removeTimeout(user).queue();
         event.getHook().sendMessage("User has successfully been unmuted").queue();
+    }
+
+    @Override
+    public void onModalInteraction(ModalInteractionEvent event) {
+
     }
 }

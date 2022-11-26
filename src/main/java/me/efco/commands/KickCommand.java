@@ -3,6 +3,7 @@ package me.efco.commands;
 import me.efco.data.DatabaseConnection;
 import me.efco.data.LogHandler;
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
@@ -35,5 +36,10 @@ public class KickCommand extends AbstractCommand {
         DatabaseConnection.getInstance().userKicked(user.getId(), user.getName(), admin.getId(), admin.getName(), reason);
         event.getGuild().kick(user).queue();
         event.getHook().sendMessage("User has successfully been banned").queue();
+    }
+
+    @Override
+    public void onModalInteraction(ModalInteractionEvent event) {
+
     }
 }
