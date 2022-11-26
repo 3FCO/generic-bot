@@ -1,6 +1,7 @@
 package me.efco.commands;
 
 import me.efco.data.DatabaseConnection;
+import me.efco.data.LogHandler;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
