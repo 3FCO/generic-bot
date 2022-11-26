@@ -10,7 +10,7 @@ public class HelpCommand extends AbstractCommand {
     public HelpCommand() {
         super(
                 "help",
-                "Display all usable commands",
+                "Display all usable commands G",
                 new ArrayList<>(),
                 new ArrayList<>(),
                 new ArrayList<>()
