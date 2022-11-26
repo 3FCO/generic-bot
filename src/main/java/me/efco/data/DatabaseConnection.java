@@ -1,6 +1,10 @@
 package me.efco.data;
 
+import me.efco.body.WarnBody;
+
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseConnection {
     private static DatabaseConnection instance;
@@ -65,7 +69,7 @@ public class DatabaseConnection {
         }
     }
 
-    public int getUserActiveWarnings(String userId) {
+    public int getUserActiveWarningsCount(String userId) {
         try (PreparedStatement statement = connection.prepareStatement("SELECT COUNT(*) as warnings FROM warnings WHERE user_id=? AND active=true;")) {
             statement.setString(1, userId);
 
@@ -88,5 +92,55 @@ public class DatabaseConnection {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public List<WarnBody> getUserActiveWarnings(String userId) {
+        List<WarnBody> warnings = new ArrayList<>();
+
+        try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM warnings WHERE user_id=? AND active=true;")) {
+            statement.setString(1, userId);
+
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                warnings.add(new WarnBody(
+                        resultSet.getInt("id"),
+                        resultSet.getString("user_id"),
+                        resultSet.getString("user_name"),
+                        resultSet.getString("admin_id"),
+                        resultSet.getString("admin_name"),
+                        resultSet.getString("reason"),
+                        resultSet.getBoolean("active")
+                ));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return warnings;
+    }
+
+    public List<WarnBody> getUserAllWarnings(String userId) {
+        List<WarnBody> warnings = new ArrayList<>();
+
+        try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM warnings WHERE user_id=?;")) {
+            statement.setString(1, userId);
+
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                warnings.add(new WarnBody(
+                        resultSet.getInt("id"),
+                        resultSet.getString("user_id"),
+                        resultSet.getString("user_name"),
+                        resultSet.getString("admin_id"),
+                        resultSet.getString("admin_name"),
+                        resultSet.getString("reason"),
+                        resultSet.getBoolean("active")
+                ));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return warnings;
     }
 }
