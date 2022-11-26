@@ -2,9 +2,7 @@ package me.efco.data;
 
 import org.jetbrains.annotations.Nullable;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Properties;
 
 public class PropertiesLoader {
@@ -28,6 +26,18 @@ public class PropertiesLoader {
         }
 
         return null;
+    }
+
+    public void setProperty(String configName, String configValue) {
+        properties.setProperty(configName, configValue);
+    }
+
+    public void save() {
+        try {
+            properties.store(new FileOutputStream("config.properties"), null);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static PropertiesLoader getInstance() {
