@@ -143,4 +143,14 @@ public class DatabaseConnection {
 
         return warnings;
     }
+
+    public void removeWarningById(int warnId) {
+        try (PreparedStatement statement = connection.prepareStatement("UPDATE warnings SET active=false WHERE id=?;")) {
+            statement.setInt(1, warnId);
+
+            statement.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

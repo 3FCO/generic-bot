@@ -28,19 +28,29 @@ public class WarnCommand extends AbstractCommand {
                                 .addOption(OptionType.STRING, "reason", "Reason for user to be warned", true),
                         new SubcommandData("view", "View a specific users warnings")
                                 .addOption(OptionType.USER, "user", "Target user to view warnings", true)
-                                .addOption(OptionType.BOOLEAN, "activeonly", "Only show active warnings", true)
+                                .addOption(OptionType.BOOLEAN, "activeonly", "Only show active warnings", true),
+                        new SubcommandData("reset", "Set all active warnings to inactive of specific user")
+                                .addOption(OptionType.USER, "user", "User whose warnings to reset"),
+                        new SubcommandData("remove", "Remove specific warning by ID")
+                                .addOption(OptionType.INTEGER, "warnid", "Warning ID")
                 )
         );
     }
 
     @Override
     public void execute(SlashCommandInteractionEvent event) {
-        switch (event.getSubcommandName().toLowerCase()) {
+        switch (event.getSubcommandName()) {
             case "issue" -> {
                 issueSubCommand(event);
             }
             case "view" -> {
                 viewSubCommand(event);
+            }
+            case "reset" -> {
+                resetSubCommand(event);
+            }
+            case "remove" -> {
+                removeSubCommand(event);
             }
         }
     }
@@ -97,13 +107,35 @@ public class WarnCommand extends AbstractCommand {
         MessageCreateBuilder messageBuilder = new MessageCreateBuilder();
         for (WarnBody wb : warnings) {
             messageBuilder.addEmbeds( new EmbedBuilder()
-                    .setTitle("Warning #" + String.format("%05d", wb.getUniqueId()))
+                    .setTitle("Warning #" + String.format("%05d", wb.getUniqueId()) + " [" + (wb.isActive() ? "Active" : "Inactive") + "]")
                     .addField("Admin", wb.getAdminName() + " [" + wb.getAdminId() + "]", false)
                     .addField("User", wb.getUserName() + " [" + wb.getUserId() + "]", false)
                     .addField("Reason", wb.getReason(), false).build() );
         }
 
         event.getHook().sendMessage(messageBuilder.build()).queue();
+    }
+
+    private void resetSubCommand(SlashCommandInteractionEvent event) {
+        event.deferReply().queue();
+
+        User user = event.getOption("user").getAsUser(); //required
+        User admin = event.getUser();
+
+        DatabaseConnection.getInstance().resetUserWarnings(user.getId());
+
+        event.getHook().sendMessage("Users active warnings successfully set to inactive").queue();
+    }
+
+    private void removeSubCommand(SlashCommandInteractionEvent event) {
+        event.deferReply().queue();
+
+        int warnId = event.getOption("warnid").getAsInt(); //required
+        User admin = event.getUser();
+
+        DatabaseConnection.getInstance().removeWarningById(warnId);
+
+        event.getHook().sendMessage("Warning successfully set to inactive").queue();
     }
 
     @Override
