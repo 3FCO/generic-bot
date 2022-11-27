@@ -26,6 +26,7 @@ public class SlashCommandHandler extends ListenerAdapter {
         insertNewCommand(new UnbanCommand());
         insertNewCommand(new MuteCommand());
         insertNewCommand(new UnmuteCommand());
+        insertNewCommand(new WarnCommand());
     }
 
     public void insertNewCommand(AbstractCommand command) {

@@ -28,6 +28,15 @@ public class PropertiesLoader {
         return null;
     }
 
+    public int getPropertyAsInteger(String propertyName) {
+        String value = getProperty(propertyName);
+        if (value != null) {
+            return Integer.parseInt(value);
+        }
+
+        return -1;
+    }
+
     public void setProperty(String configName, String configValue) {
         properties.setProperty(configName, configValue);
     }

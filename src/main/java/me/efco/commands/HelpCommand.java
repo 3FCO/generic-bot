@@ -1,6 +1,7 @@
 package me.efco.commands;
 
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder;
 
@@ -28,5 +29,10 @@ public class HelpCommand extends AbstractCommand {
         event.reply(
                 new MessageCreateBuilder().addEmbeds(embedBuilder.build()).build()
         ).queue();
+    }
+
+    @Override
+    public void onModalInteraction(ModalInteractionEvent event) {
+
     }
 }

@@ -1,6 +1,7 @@
 package me.efco.commands;
 
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
@@ -32,5 +33,10 @@ public class UnbanCommand extends AbstractCommand {
             event.getGuild().unban(user).queue();
             event.getHook().sendMessage("User has successfully been unbanned").queue();
         }
+    }
+
+    @Override
+    public void onModalInteraction(ModalInteractionEvent event) {
+
     }
 }
