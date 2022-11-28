@@ -30,9 +30,4 @@ public class HelpCommand extends AbstractCommand {
                 new MessageCreateBuilder().addEmbeds(embedBuilder.build()).build()
         ).queue();
     }
-
-    @Override
-    public void onModalInteraction(ModalInteractionEvent event) {
-
-    }
 }

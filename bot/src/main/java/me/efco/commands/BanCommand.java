@@ -39,9 +39,4 @@ public class BanCommand extends AbstractCommand {
         event.getGuild().ban(user, duration, TimeUnit.SECONDS).queue();
         event.getHook().sendMessage("User has successfully been banned").queue();
     }
-
-    @Override
-    public void onModalInteraction(ModalInteractionEvent event) {
-
-    }
 }

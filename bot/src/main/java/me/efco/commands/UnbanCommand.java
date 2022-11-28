@@ -34,9 +34,4 @@ public class UnbanCommand extends AbstractCommand {
             event.getHook().sendMessage("User has successfully been unbanned").queue();
         }
     }
-
-    @Override
-    public void onModalInteraction(ModalInteractionEvent event) {
-
-    }
 }

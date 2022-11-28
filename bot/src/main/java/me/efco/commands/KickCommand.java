@@ -37,9 +37,4 @@ public class KickCommand extends AbstractCommand {
         event.getGuild().kick(user).queue();
         event.getHook().sendMessage("User has successfully been banned").queue();
     }
-
-    @Override
-    public void onModalInteraction(ModalInteractionEvent event) {
-
-    }
 }

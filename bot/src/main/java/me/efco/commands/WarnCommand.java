@@ -107,10 +107,10 @@ public class WarnCommand extends AbstractCommand {
         MessageCreateBuilder messageBuilder = new MessageCreateBuilder();
         for (WarnBody wb : warnings) {
             messageBuilder.addEmbeds( new EmbedBuilder()
-                    .setTitle("Warning #" + String.format("%05d", wb.getUniqueId()) + " [" + (wb.isActive() ? "Active" : "Inactive") + "]")
-                    .addField("Admin", wb.getAdminName() + " [" + wb.getAdminId() + "]", false)
-                    .addField("User", wb.getUserName() + " [" + wb.getUserId() + "]", false)
-                    .addField("Reason", wb.getReason(), false).build() );
+                    .setTitle("Warning #" + String.format("%05d", wb.uniqueId()) + " [" + (wb.active() ? "Active" : "Inactive") + "]")
+                    .addField("Admin", wb.adminName() + " [" + wb.adminId() + "]", false)
+                    .addField("User", wb.userName() + " [" + wb.userId() + "]", false)
+                    .addField("Reason", wb.reason(), false).build() );
         }
 
         event.getHook().sendMessage(messageBuilder.build()).queue();
@@ -136,10 +136,5 @@ public class WarnCommand extends AbstractCommand {
         DatabaseConnection.getInstance().removeWarningById(warnId);
 
         event.getHook().sendMessage("Warning successfully set to inactive").queue();
-    }
-
-    @Override
-    public void onModalInteraction(ModalInteractionEvent event) {
-
     }
 }
