@@ -65,6 +65,7 @@ public class GiveawayHandler {
 
             MessageEmbed messageEmbed =  message.getEmbeds().get(0);
             MessageEmbed newEmbed =  new EmbedBuilder()
+                    .setTitle(messageEmbed.getTitle())
                     .addField(messageEmbed.getFields().get(0))
                     .addField(messageEmbed.getFields().get(1))
                     .addField("Winners", stringBuilder.toString(), false)
@@ -92,6 +93,7 @@ public class GiveawayHandler {
         textChannel.retrieveMessageById(id).queue((message) -> {
             MessageEmbed messageEmbed =  message.getEmbeds().get(0);
             MessageEmbed newEmbed =  new EmbedBuilder()
+                    .setTitle(messageEmbed.getTitle())
                     .addField(messageEmbed.getFields().get(0))
                     .addField("Entries", giveaway.entries().size() + "", false)
                     .addField(messageEmbed.getFields().get(2))

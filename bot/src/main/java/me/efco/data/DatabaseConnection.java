@@ -217,4 +217,14 @@ public class DatabaseConnection {
 
         return giveaways;
     }
+
+    public void deleteGiveawayById(long id) {
+        try (PreparedStatement statement = connection.prepareStatement("DELETE FROM giveaways WHERE id=?; DELETE FROM giveaway_entries WHERE giveaway_id=?;")) {
+            statement.setLong(1, id);
+            statement.setLong(2, id);
+            statement.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

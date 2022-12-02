@@ -47,7 +47,9 @@ public class GiveawayCommand extends AbstractCommand {
                                 .addOption(OptionType.STRING, "time", "Run time. Postfix with (s,m,h,d)", true)
                                 .addOption(OptionType.INTEGER, "winner-amount", "Amount of winners!", true),
                         new SubcommandData("end", "End a specific giveaway")
-                                .addOption(OptionType.STRING, "id", "Id of giveaway", true)
+                                .addOption(OptionType.STRING, "id", "Id of giveaway", true),
+                        new SubcommandData("delete", "Deleting a giveaway completely")
+                                .addOption(OptionType.STRING, "id", "Id of giveaway")
                 )
         );
     }
@@ -60,6 +62,9 @@ public class GiveawayCommand extends AbstractCommand {
             }
             case "end" -> {
                 endSubCommand(event);
+            }
+            case "delete" -> {
+                deleteSubCommand(event);
             }
             default -> {
                 event.reply("Currently not supported").setEphemeral(true).queue();
@@ -111,7 +116,7 @@ public class GiveawayCommand extends AbstractCommand {
         event.getHook().sendMessage("Giveaway has been created!").queue();
     }
 
-    public void endSubCommand(SlashCommandInteractionEvent event) {
+    private void endSubCommand(SlashCommandInteractionEvent event) {
         event.deferReply().setEphemeral(true).queue();
 
         long id = 0;
@@ -128,4 +133,19 @@ public class GiveawayCommand extends AbstractCommand {
 
         event.getHook().sendMessage("Giveaway successfully ended").queue();
     }
+    private void deleteSubCommand(SlashCommandInteractionEvent event) {
+        event.deferReply().setEphemeral(true).queue();
+
+        long id = 0;
+        try {
+            id = Long.parseLong(event.getOption("id").getAsString());
+        } catch (NumberFormatException ignored) {}
+
+        GiveawayHandler.getInstance().getActiveGiveaways().remove(id);
+        DatabaseConnection.getInstance().deleteGiveawayById(id);
+        event.getGuild().getTextChannelById(PropertiesLoader.getInstance().getProperty("giveaway_channel")).deleteMessageById(id).queue();
+
+        event.getHook().sendMessage("If a giveaway with that ID existed, it was successfully deleted").queue();
+    }
+
 }

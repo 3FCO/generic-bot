@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS giveaway_entries(
     giveaway_id BIGINT NOT NULL,
     PRIMARY KEY (user_id, giveaway_id)
 );
-
+/*
 INSERT INTO giveaways (id, price, end_time, winner_amount) VALUES (123, 'Mulah 1', 123123123, 3);
 INSERT INTO giveaways (id, price, end_time, winner_amount) VALUES (321, 'Mulah 2', 321321321, 2);
 
@@ -63,4 +63,5 @@ LEFT JOIN giveaway_entries ge on g.id = ge.giveaway_id
 WHERE g.end_time <= 3
 GROUP BY g.id
 
-SELECT id, price, end_time, winner_amount, array_agg(user_id) as entries FROM giveaways LEFT JOIN giveaway_entries on id = giveaway_id WHERE active=TRUE GROUP BY id
+SELECT id, price, end_time, winner_amount, array_agg(user_id) as entries FROM giveaways LEFT JOIN giveaway_entries on id = giveaway_id WHERE active=TRUE GROUP BY id;
+*/
