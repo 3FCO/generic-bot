@@ -47,7 +47,7 @@ public class GiveawayCommand extends AbstractCommand {
                                 .addOption(OptionType.STRING, "time", "Run time. Postfix with (s,m,h,d)", true)
                                 .addOption(OptionType.INTEGER, "winner-amount", "Amount of winners!", true),
                         new SubcommandData("end", "End a specific giveaway")
-                                .addOption(OptionType.INTEGER, "id", "Id of giveaway", true)
+                                .addOption(OptionType.STRING, "id", "Id of giveaway", true)
                 )
         );
     }
@@ -57,6 +57,9 @@ public class GiveawayCommand extends AbstractCommand {
         switch (event.getSubcommandName()) {
             case "create" -> {
                 createSubCommand(event);
+            }
+            case "end" -> {
+                endSubCommand(event);
             }
             default -> {
                 event.reply("Currently not supported").setEphemeral(true).queue();
@@ -106,5 +109,23 @@ public class GiveawayCommand extends AbstractCommand {
         GiveawayHandler.getInstance().newGiveaway(new GiveawayBody(message.getIdLong(), price, ending.toEpochMilli(), winnersAmount, new ArrayList<>()));
 
         event.getHook().sendMessage("Giveaway has been created!").queue();
+    }
+
+    public void endSubCommand(SlashCommandInteractionEvent event) {
+        event.deferReply().setEphemeral(true).queue();
+
+        long id = 0;
+        try {
+            id = Long.parseLong(event.getOption("id").getAsString());
+        } catch (NumberFormatException ignored) {}
+
+        if (!GiveawayHandler.getInstance().getActiveGiveaways().containsKey(id)) {
+            event.getHook().sendMessage("No active giveaway with specified ID").queue();
+            return;
+        }
+
+        GiveawayHandler.getInstance().endGiveaway(id);
+
+        event.getHook().sendMessage("Giveaway successfully ended").queue();
     }
 }

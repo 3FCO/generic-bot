@@ -36,10 +36,11 @@ public class GiveawayHandler {
                 new Date(giveaway.end()));
     }
 
-    private void endGiveaway(long id) {
+    public void endGiveaway(long id) {
         if (!activeGiveaways.containsKey(id)) return;
 
         GiveawayBody giveaway = activeGiveaways.get(id);
+        activeGiveaways.remove(id);
         Random random = new Random();
 
         ArrayList<Long> winners = new ArrayList<>();
