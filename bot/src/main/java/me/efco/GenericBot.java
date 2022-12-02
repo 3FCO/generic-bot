@@ -4,6 +4,7 @@ import me.efco.commands.SlashCommandHandler;
 import me.efco.data.PropertiesLoader;
 import me.efco.data.DatabaseConnection;
 import me.efco.events.BotMiscEvents;
+import me.efco.events.BotMiscInteractionEvents;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.Permission;
@@ -20,7 +21,7 @@ public class GenericBot {
 
         api = JDABuilder.createDefault(PropertiesLoader.getInstance().getProperty("bot_token"))
                 .setActivity(Activity.watching("Under Construction S1E1"))
-                .addEventListeners(new BotMiscEvents())
+                .addEventListeners(new BotMiscEvents(), new BotMiscInteractionEvents())
                 .addEventListeners(SlashCommandHandler.getInstance())
                 .build();
 

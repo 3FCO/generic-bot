@@ -1,11 +1,14 @@
 package me.efco.commands;
 
 import me.efco.BotUtilities;
+import me.efco.GiveawayHandler;
 import me.efco.GiveawayTime;
+import me.efco.body.GiveawayBody;
 import me.efco.data.DatabaseConnection;
 import me.efco.data.PropertiesLoader;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
@@ -15,9 +18,11 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
+import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.dv8tion.jda.api.interactions.components.text.TextInput;
 import net.dv8tion.jda.api.interactions.components.text.TextInputStyle;
 import net.dv8tion.jda.api.interactions.modals.Modal;
+import net.dv8tion.jda.api.requests.restaction.MessageCreateAction;
 import net.dv8tion.jda.api.utils.Timestamp;
 import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder;
 
@@ -25,7 +30,7 @@ import java.awt.*;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalUnit;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -89,11 +94,16 @@ public class GiveawayCommand extends AbstractCommand {
 
         MessageEmbed messageEmbed = new EmbedBuilder()
                 .setTitle(price)
-                .addField("End time", "<t:" + (ending.getEpochSecond()) + ":R>", false)
-                .addField("Number of winners", winnersAmount + "", false)
+                .addField("Ends", "<t:" + (ending.getEpochSecond()) + ":R>", false)
+                .addField("Entries", "0", false)
+                .addField("Winners", winnersAmount + "", true)
                 .build();
 
-        targetChannel.sendMessageEmbeds(messageEmbed).queue();
+        Message message = targetChannel.sendMessageEmbeds(messageEmbed)
+                .addActionRow(Button.primary("ga-join", "Join Giveaway"))
+                .complete();
+
+        GiveawayHandler.getInstance().newGiveaway(new GiveawayBody(message.getIdLong(), price, ending.toEpochMilli(), winnersAmount, new ArrayList<>()));
 
         event.getHook().sendMessage("Giveaway has been created!").queue();
     }
