@@ -33,13 +33,8 @@ public class KickCommand extends AbstractCommand {
         String reason = event.getOption("reason").getAsString(); //required
         User admin = event.getUser();
 
-        DatabaseConnection.getInstance().userKicked(user.getId(), user.getName(), admin.getId(), admin.getName(), reason);
+        DatabaseConnection.getInstance().userKicked(user.getIdLong(), user.getName(), admin.getIdLong(), admin.getName(), reason);
         event.getGuild().kick(user).queue();
         event.getHook().sendMessage("User has successfully been banned").queue();
-    }
-
-    @Override
-    public void onModalInteraction(ModalInteractionEvent event) {
-
     }
 }

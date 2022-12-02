@@ -3,6 +3,7 @@ package me.efco.commands;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.hooks.SubscribeEvent;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
 
@@ -44,6 +45,4 @@ public abstract class AbstractCommand {
     public List<SubcommandData> getSubcommands() {
         return subcommands;
     }
-
-    public abstract void onModalInteraction(ModalInteractionEvent event);
 }

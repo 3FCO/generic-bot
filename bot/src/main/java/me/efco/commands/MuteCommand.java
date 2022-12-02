@@ -34,9 +34,4 @@ public class MuteCommand extends AbstractCommand {
         event.getGuild().timeoutFor(user, duration, TimeUnit.MINUTES).queue();
         event.getHook().sendMessage("User has successfully been timeout for " + duration + " minutes").queue();
     }
-
-    @Override
-    public void onModalInteraction(ModalInteractionEvent event) {
-
-    }
 }

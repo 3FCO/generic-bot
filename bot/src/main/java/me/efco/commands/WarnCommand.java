@@ -62,14 +62,14 @@ public class WarnCommand extends AbstractCommand {
         String reason = event.getOption("reason").getAsString(); //required
         User admin = event.getUser();
 
-        DatabaseConnection.getInstance().userWarned(user.getId(), user.getName(), admin.getId(), admin.getName(), reason);
-        int activeWarnings = DatabaseConnection.getInstance().getUserActiveWarningsCount(user.getId());
+        DatabaseConnection.getInstance().userWarned(user.getIdLong(), user.getName(), admin.getIdLong(), admin.getName(), reason);
+        int activeWarnings = DatabaseConnection.getInstance().getUserActiveWarningsCount(user.getIdLong());
 
         if (activeWarnings >= PropertiesLoader.getInstance().getPropertyAsInteger("warning_threshold")) {
             String punishmentType = PropertiesLoader.getInstance().getProperty("warning_punishment_type");
             int punishmentDuration = PropertiesLoader.getInstance().getPropertyAsInteger("warning_punishment_duration");
 
-            DatabaseConnection.getInstance().resetUserWarnings(user.getId());
+            DatabaseConnection.getInstance().resetUserWarnings(user.getIdLong());
 
             switch (punishmentType) {
                 case "kick" -> {
@@ -99,18 +99,18 @@ public class WarnCommand extends AbstractCommand {
 
         List<WarnBody> warnings;
         if (activeOnly) {
-            warnings = DatabaseConnection.getInstance().getUserActiveWarnings(user.getId());
+            warnings = DatabaseConnection.getInstance().getUserActiveWarnings(user.getIdLong());
         } else {
-            warnings = DatabaseConnection.getInstance().getUserAllWarnings(user.getId());
+            warnings = DatabaseConnection.getInstance().getUserAllWarnings(user.getIdLong());
         }
 
         MessageCreateBuilder messageBuilder = new MessageCreateBuilder();
         for (WarnBody wb : warnings) {
             messageBuilder.addEmbeds( new EmbedBuilder()
-                    .setTitle("Warning #" + String.format("%05d", wb.getUniqueId()) + " [" + (wb.isActive() ? "Active" : "Inactive") + "]")
-                    .addField("Admin", wb.getAdminName() + " [" + wb.getAdminId() + "]", false)
-                    .addField("User", wb.getUserName() + " [" + wb.getUserId() + "]", false)
-                    .addField("Reason", wb.getReason(), false).build() );
+                    .setTitle("Warning #" + String.format("%05d", wb.uniqueId()) + " [" + (wb.active() ? "Active" : "Inactive") + "]")
+                    .addField("Admin", wb.adminName() + " [" + wb.adminId() + "]", false)
+                    .addField("User", wb.userName() + " [" + wb.userId() + "]", false)
+                    .addField("Reason", wb.reason(), false).build() );
         }
 
         event.getHook().sendMessage(messageBuilder.build()).queue();
@@ -122,7 +122,7 @@ public class WarnCommand extends AbstractCommand {
         User user = event.getOption("user").getAsUser(); //required
         User admin = event.getUser();
 
-        DatabaseConnection.getInstance().resetUserWarnings(user.getId());
+        DatabaseConnection.getInstance().resetUserWarnings(user.getIdLong());
 
         event.getHook().sendMessage("Users active warnings successfully set to inactive").queue();
     }
@@ -136,10 +136,5 @@ public class WarnCommand extends AbstractCommand {
         DatabaseConnection.getInstance().removeWarningById(warnId);
 
         event.getHook().sendMessage("Warning successfully set to inactive").queue();
-    }
-
-    @Override
-    public void onModalInteraction(ModalInteractionEvent event) {
-
     }
 }

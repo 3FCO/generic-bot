@@ -35,13 +35,8 @@ public class BanCommand extends AbstractCommand {
         int duration = event.getOption("duration").getAsInt(); //required
         User admin = event.getUser();
 
-        DatabaseConnection.getInstance().userBanned(user.getId(), user.getName(), admin.getId(), admin.getName(), reason, duration);
+        DatabaseConnection.getInstance().userBanned(user.getIdLong(), user.getName(), admin.getIdLong(), admin.getName(), reason, duration);
         event.getGuild().ban(user, duration, TimeUnit.SECONDS).queue();
         event.getHook().sendMessage("User has successfully been banned").queue();
-    }
-
-    @Override
-    public void onModalInteraction(ModalInteractionEvent event) {
-
     }
 }

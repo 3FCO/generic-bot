@@ -31,9 +31,4 @@ public class UnmuteCommand extends AbstractCommand {
         event.getGuild().removeTimeout(user).queue();
         event.getHook().sendMessage("User has successfully been unmuted").queue();
     }
-
-    @Override
-    public void onModalInteraction(ModalInteractionEvent event) {
-
-    }
 }
